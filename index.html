@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheet Data Viewer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        /* Modern Scrolling Tab Layout */
+        .controls-row {
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .tabs-container {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-button {
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            color: #8a94a6;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+        .tab-button:hover {
+            color: #333;
+        }
+        .tab-button.active {
+            color: #2b6cb0;
+            font-weight: 600;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #2b6cb0;
+            border-radius: 2px;
+        }
+
+        /* Table Structure Adjustments */
+        .table-container {
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        tr:hover {
+            background-color: #f7fafc;
+        }
+
+        /* Re-engineered High-Aesthetic Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            padding: 5px 0;
+        }
+        .grid-card {
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            position: relative; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background-color: #fff;
+        }
+        .grid-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+        .grid-image-wrapper {
+            width: 100%;
+            height: 250px; 
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid rgba(0,0,0,0.03);
+            position: relative;
+        }
+        .grid-image-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .grid-image-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        .grid-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: #2d3748;
+            margin: 0 0 12px 0;
+            line-height: 1.4;
+            text-align: left;
+            padding-right: 45px; 
+        }
+
+        /* Floating Circular Price Badge */
+        .price-circle {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background-color: #2b6cb0;
+            color: white;
+            border-radius: 50%;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 8px rgba(43, 108, 176, 0.3);
+            z-index: 2;
+        }
+
+        /* Upgraded Enhanced Calendar Modules */
+        .calendar-row {
+            display: flex;
+            gap: 6px;
+            margin-top: auto; 
+            padding-top: 10px;
+        }
+        .calendar-square {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        
+        /* Clear Visual Cues: Available (Green) */
+        .calendar-square.available {
+            background-color: #e6fffa;
+            color: #00a389;
+            border: 1.5px solid #b2f5ea;
+            cursor: pointer;
+        }
+        .calendar-square.available:hover {
+            background-color: #319795;
+            color: white;
+            border-color: #319795;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(49, 151, 149, 0.25);
+        }
+
+        /* Clear Visual Cues: Occupied/Booked (Red) */
+        .calendar-square.occupied {
+            background-color: #fff5f5;
+            color: #e53e3e;
+            border: 1.5px solid #fed7d7;
+            cursor: not-allowed;
+            position: relative;
+        }
+        .calendar-square.occupied:hover {
+            transform: none;
+        }
+
+        .status-message {
+            font-style: italic;
+            color: #888;
+            padding: 20px;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* Booking Terms & Confirmation Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-card {
+            background-color: #fff;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transform: scale(0.9);
+            transition: transform 0.25s ease;
+        }
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+        .modal-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 10px;
+        }
+        .booking-details-box {
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        .booking-details-box div {
+            margin-bottom: 4px;
+        }
+        .tc-heading {
+            font-weight: 700;
+            font-size: 13px;
+            color: #e53e3e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .tc-box {
+            background-color: #fffaf0;
+            border: 1px solid #feebc8;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            color: #744210;
+            line-height: 1.5;
+            max-height: 160px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: background 0.15s ease;
+        }
+        .btn-cancel {
+            background-color: #edf2f7;
+            color: #4a5568;
+        }
+        .btn-cancel:hover {
+            background-color: #e2e8f0;
+        }
+        .btn-wa {
+            background-color: #25D366;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-wa:hover {
+            background-color: #128C7E;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Snowrentcos</h2>
+    
+    <div class="controls-row">
+        <div id="tabs-container" class="tabs-container"></div>
+    </div>
+    
+    <div id="table-view-panel" class="table-container hidden">
+        <table id="data-table">
+            <thead>
+                <tr id="table-header"></tr>
+            </thead>
+            <tbody id="table-body">
+                <tr>
+                    <td class="status-message">Initializing...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="grid-view-panel" class="grid-container hidden"></div>
+
+    <div id="booking-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">Rental Booking Request</div>
+            
+            <div class="booking-details-box">
+                <div><strong>Costume:</strong> <span id="modal-costume-name">-</span></div>
+                <div><strong>Selected Date:</strong> <span id="modal-target-date">-</span></div>
+            </div>
+
+            <div class="tc-heading">Terms & Conditions (S&K)</div>
+            <div class="tc-box">
+                DP minimal 50k or kalau yang di rental dibawah 50k sesuai harga yang direntalin ^^ tq
+                <br><br>
+                Pembayaran wajib lunas H-1 sebelum ambil kostum / kirim by TF
+                <br><br>
+                <strong>Rekening Pembayaran Kostum Cosplay</strong>
+                <br><br>
+                Pembayaran melalui QRIS dikenakan biaya admin sebesar Rp 1.000/ transaksi. Wajib dibayarkan setiap kali transfer melalui QRIS. Selain QRIS tidak dikenakan biaya admin
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-cancel" onclick="closeBookingModal()">Cancel</button>
+                <button class="btn btn-wa" id="modal-wa-submit">Proceed to WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. CONFIGURATION TARGETS
+        const SPREADSHEET_ID = '1NYA0ZVcPQU-sVyEEAWSkAIOhVc0R6tFfqLXVHe8qmsw'; 
+        const AVAILABLE_SHEETS = ['List', 'Resi JNT', 'Resi Paxel', 'COD']; 
+        
+        // WhatsApp target destination setting configuration (Change to your business number)
+        const WHATSAPP_NUMBER = '6281234567890'; 
+
+        // Internal State Engine
+        let currentSheetData = [];
+        let activeSheet = AVAILABLE_SHEETS[0];
+
+        function generateFaintCategoryColor(categoryName) {
+            if (!categoryName) return 'hsl(0, 0%, 100%)';
+            let hash = 0;
+            const cleanStr = String(categoryName).trim().toUpperCase();
+            for (let i = 0; i < cleanStr.length; i++) {
+                hash = cleanStr.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const hue = Math.abs(hash) % 360;
+            return `hsl(${hue}, 55%, 95%)`;
+        }
+
+        function extractInstagramShortcode(url) {
+            if (!url) return null;
+            const match = String(url).match(/\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
+            return match ? match[2] : null;
+        }
+
+        // Open Modal Handler
+        function openBookingModal(costumeName, dateString) {
+            document.getElementById('modal-costume-name').textContent = costumeName;
+            document.getElementById('modal-target-date').textContent = dateString;
+            
+            // Build text template exactly matching the user formatting preferences
+            const templateText = `☃️ F͓̽o͓̽r͓̽m͓̽ R͓̽e͓̽n͓̽t͓̽a͓̽l͓̽ S͓̽n͓̽o͓̽w͓̽ R͓̽e͓̽n͓̽t͓̽ C͓̽o͓̽s͓̽ ☃️\n\n` +
+                                 `1. Kostum yang dipakai : ${costumeName}\n` +
+                                 `2. Dipakai tanggal : ${dateString}\n` +
+                                 `3. foto KTP/KIA/SIM/KT PELAJAR/IDENTITAS LAINNYA (NIK silahkan diblur saja) :\n` +
+                                 `4. Foto selfie dengan KTP/KIA/SIM/KT PELAJAR/IDENTITAS LAINNYA + FS TULISAN SNOWRENTCOS :\n` +
+                                 `5. Nama Lengkap ;\n` +
+                                 `6. Alamat Pengiriman (Kosong saja kalau diambil dirumah Snowrent) :\n` +
+                                 `Kecamatan & Kode Pos :\n` +
+                                 `7. No HP (WA) :\n` +
+                                 `8. Sosmed aktif (SS INSTAGRAM/ TIKTOK) :\n` +
+                                 `9. No HP (WA) kerabat :`;
+
+            const encodedMessage = encodeURIComponent(templateText);
+            const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            
+            const submitBtn = document.getElementById('modal-wa-submit');
+            submitBtn.onclick = function() {
+                window.open(waUrl, '_blank');
+                closeBookingModal();
+            };
+
+            document.getElementById('booking-modal').classList.add('active');
+        }
+
+        // Close Modal Handler
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.remove('active');
+        }
+
+        // Initialize Tabs Layout
+        function initializeTabs() {
+            const container = document.getElementById('tabs-container');
+            container.innerHTML = '';
+            
+            AVAILABLE_SHEETS.forEach((sheetName, index) => {
+                const button = document.createElement('button');
+                button.className = 'tab-button';
+                if (index === 0) button.classList.add('active');
+                button.textContent = sheetName;
+                
+                button.onclick = function() {
+                    const buttons = document.querySelectorAll('.tab-button');
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    activeSheet = sheetName;
+                    fetchSheetData(sheetName);
+                };
+                container.appendChild(button);
+            });
+        }
+
+        async function fetchSheetData(sheetName) {
+            const tablePanel = document.getElementById('table-view-panel');
+            const gridPanel = document.getElementById('grid-view-panel');
+            const tableBody = document.getElementById('table-body');
+            
+            tableBody.innerHTML = '<tr><td class="status-message">Loading data...</td></tr>';
+            gridPanel.innerHTML = '<div class="status-message">Loading data...</div>';
+
+            if (sheetName === 'List') {
+                tablePanel.classList.add('hidden');
+                gridPanel.classList.remove('hidden');
+            } else {
+                gridPanel.classList.add('hidden');
+                tablePanel.classList.remove('hidden');
+            }
+            
+            const url = `https://opensheet.elk.sh/${SPREADSHEET_ID}/${sheetName}`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP Status: ${response.status}`);
+                
+                currentSheetData = await response.json();
+
+                if (!currentSheetData || currentSheetData.length === 0) {
+                    const emptyMsg = '<tr><td class="status-message">This tab is completely empty.</td></tr>';
+                    tableBody.innerHTML = emptyMsg;
+                    gridPanel.innerHTML = '<div class="status-message">This tab is completely empty.</div>';
+                    return;
+                }
+
+                if (sheetName === 'List') {
+                    renderGridView(currentSheetData);
+                } else {
+                    renderTableView(currentSheetData);
+                }
+
+            } catch (error) {
+                console.error("[Debug Error] Extraction failure: ", error);
+                const errorMsg = `Failed to load data tab "${sheetName}". Verify name and parameters.`;
+                tableBody.innerHTML = `<tr><td class="status-message" style="color: red;">${errorMsg}</td></tr>`;
+                gridPanel.innerHTML = `<div class="status-message" style="color: red;">${errorMsg}</div>`;
+            }
+        }
+
+        function renderTableView(rawData) {
+            const headerRow = document.getElementById('table-header');
+            const tableBody = document.getElementById('table-body');
+            
+            headerRow.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            const allKeys = Array.from(new Set(rawData.flatMap(row => Object.keys(row))))
+                                 .filter(key => key.trim() !== '' && key !== 'undefined');
+
+            allKeys.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+
+            rawData.forEach(row => {
+                const hasData = Object.values(row).some(val => val && String(val).trim() !== '');
+                if (!hasData) return;
+
+                const tr = document.createElement('tr');
+                allKeys.forEach(header => {
+                    const td = document.createElement('td');
+                    let cellValue = row[header] !== undefined ? row[header] : '';
+                    if (typeof cellValue === 'object') cellValue = '';
+                    td.textContent = cellValue;
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function renderGridView(rawData) {
+            const gridPanel = document.getElementById('grid-view-panel');
+            gridPanel.innerHTML = '';
+
+            const allKeys = Array.from(new Set(rawData.flatMap(row => Object.keys(row))));
+
+            const titleKey = allKeys.find(k => k.toUpperCase().includes('DAFTAR')) || allKeys[0];
+            const imageKey = allKeys.find(k => k.toUpperCase().includes('LINK') || k.toUpperCase().includes('IG'));
+            const priceKey = allKeys.find(k => k.toUpperCase().includes('HARGA'));
+            const categoryKey = allKeys.find(k => k.toUpperCase().includes('CATEGORY') || k.toUpperCase().includes('ANIME'));
+
+            const dateKeys = allKeys.filter(k => {
+                const upper = k.toUpperCase();
+                return upper.includes('MEI') || upper.includes('JUNI') || (/\d+/.test(k) && !upper.includes('NO') && k !== titleKey && k !== priceKey);
+            }).slice(0, 5);
+
+            rawData.forEach((row, index) => {
+                const titleValue = row[titleKey] ? String(row[titleKey]).trim() : '';
+                if (!titleValue || titleValue === '') return;
+
+                const card = document.createElement('div');
+                card.className = 'grid-card';
+                
+                const categoryValue = categoryKey ? row[categoryKey] : '';
+                card.style.backgroundColor = generateFaintCategoryColor(categoryValue);
+
+                const imgWrapper = document.createElement('div');
+                imgWrapper.className = 'grid-image-wrapper';
+                
+                const rawUrl = imageKey ? String(row[imageKey]).trim() : '';
+                const igShortcode = extractInstagramShortcode(rawUrl);
+
+                if (igShortcode) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.instagram.com/p/${igShortcode}/embed`;
+                    iframe.setAttribute('scrolling', 'no');
+                    iframe.setAttribute('allowtransparency', 'true');
+                    imgWrapper.appendChild(iframe);
+                } else if (rawUrl && rawUrl.startsWith('http')) {
+                    const img = document.createElement('img');
+                    img.src = rawUrl;
+                    img.alt = titleValue;
+                    imgWrapper.appendChild(img);
+                } else {
+                    const img = document.createElement('img');
+                    img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%23cbd5e0" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
+                    imgWrapper.appendChild(img);
+                }
+                card.appendChild(imgWrapper);
+
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'grid-title';
+                titleDiv.textContent = titleValue;
+                card.appendChild(titleDiv);
+
+                const priceValue = priceKey ? row[priceKey] : '';
+                if (priceValue !== undefined && String(priceValue).trim() !== '') {
+                    const priceCircle = document.createElement('div');
+                    priceCircle.className = 'price-circle';
+                    priceCircle.textContent = String(priceValue).trim();
+                    card.appendChild(priceCircle);
+                }
+
+                // Mini Calendar Row Construction
+                const calendarRow = document.createElement('div');
+                calendarRow.className = 'calendar-row';
+
+                dateKeys.forEach(dateHeader => {
+                    const square = document.createElement('div');
+                    square.className = 'calendar-square';
+                    
+                    const matchDigits = dateHeader.match(/\d+/);
+                    square.textContent = matchDigits ? matchDigits[0] : dateHeader.substring(0, 2);
+
+                    const bookingValue = row[dateHeader];
+                    const isOccupied = bookingValue && String(bookingValue).trim() !== '';
+
+                    if (isOccupied) {
+                        square.classList.add('occupied');
+                        square.title = `${dateHeader}\nStatus: Booked (${String(bookingValue).trim()})`;
+                    } else {
+                        square.classList.add('available');
+                        square.title = `${dateHeader}\nStatus: Available (Click to rent)`;
+                        // Interactive action on open items
+                        square.onclick = function() {
+                            openBookingModal(titleValue, dateHeader);
+                        };
+                    }
+                    calendarRow.appendChild(square);
+                });
+                
+                card.appendChild(calendarRow);
+                gridPanel.appendChild(card);
+            });
+        }
+
+        initializeTabs();
+        fetchSheetData(activeSheet);
+    </script>
+</body>
+</html>
