@@ -3,375 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sheet Data Viewer</title>
+    <title>Snowrentcos</title>
+    
+    <!-- Youthful, playful Google Fonts for that authentic straw.page look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+
     <style>
+        /* Base page styling - Dotted journal/scrapbook paper texture */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 20px auto;
+            font-family: 'Quicksand', 'Fredoka', sans-serif;
+            margin: 30px auto;
             max-width: 1200px;
             padding: 0 20px;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-
-        /* Modern Scrolling Tab Layout */
-        .controls-row {
-            border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 20px;
-        }
-        .tabs-container {
-            display: flex;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-        .tabs-container::-webkit-scrollbar {
-            display: none;
-        }
-        .tab-button {
-            padding: 12px 18px;
-            font-size: 16px;
-            font-weight: 500;
-            background: none;
-            color: #8a94a6;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.2s ease;
-        }
-        .tab-button:hover {
-            color: #333;
-        }
-        .tab-button.active {
-            color: #2b6cb0;
-            font-weight: 600;
-        }
-        .tab-button.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background-color: #2b6cb0;
-            border-radius: 2px;
-        }
-
-        /* Table Structure Adjustments */
-        .table-container {
-            overflow-x: auto;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-radius: 8px;
-            background: white;
-            border: 1px solid #e2e8f0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-        th, td {
-            padding: 14px 18px;
-            border-bottom: 1px solid #e2e8f0;
-            white-space: nowrap;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-            text-transform: uppercase;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-        }
-        tr:hover {
-            background-color: #f7fafc;
-        }
-
-        /* Re-engineered High-Aesthetic Grid Layout */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-            padding: 5px 0;
-        }
-        .grid-card {
-            border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            position: relative; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            background-color: #fff;
-        }
-        .grid-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-        }
-        .grid-image-wrapper {
-            width: 100%;
-            height: 250px; 
-            background-color: rgba(255, 255, 255, 0.6);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-bottom: 14px;
-            border: 1px solid rgba(0,0,0,0.03);
-            position: relative;
-        }
-        .grid-image-wrapper img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        .grid-image-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-        .grid-title {
-            font-weight: 700;
-            font-size: 16px;
-            color: #2d3748;
-            margin: 0 0 12px 0;
-            line-height: 1.4;
-            text-align: left;
-            padding-right: 45px; 
-        }
-
-        /* Floating Circular Price Badge */
-        .price-circle {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            background-color: #2b6cb0;
-            color: white;
-            border-radius: 50%;
-            width: 46px;
-            height: 46px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-            box-shadow: 0 4px 8px rgba(43, 108, 176, 0.3);
-            z-index: 2;
-        }
-
-        /* Upgraded Enhanced Calendar Modules */
-        .calendar-row {
-            display: flex;
-            gap: 6px;
-            margin-top: auto; 
-            padding-top: 10px;
-        }
-        .calendar-square {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 700;
-            transition: all 0.2s ease;
+            background-color: #f2f7fc;
+            background-image: radial-gradient(#cbdbe6 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+            color: #4a5768;
             user-select: none;
         }
-        
-        /* Clear Visual Cues: Available (Green) */
-        .calendar-square.available {
-            background-color: #e6fffa;
-            color: #00a389;
-            border: 1.5px solid #b2f5ea;
-            cursor: pointer;
-        }
-        .calendar-square.available:hover {
-            background-color: #319795;
-            color: white;
-            border-color: #319795;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(49, 151, 149, 0.25);
-        }
 
-        /* Clear Visual Cues: Occupied/Booked (Red) */
-        .calendar-square.occupied {
-            background-color: #fff5f5;
-            color: #e53e3e;
-            border: 1.5px solid #fed7d7;
-            cursor: not-allowed;
-            position: relative;
-        }
-        .calendar-square.occupied:hover {
-            transform: none;
-        }
-
-        .status-message {
-            font-style: italic;
-            color: #888;
-            padding: 20px;
+        /* Anime/Sticker title look */
+        h2 { 
+            font-family: 'Fredoka', sans-serif;
+            color: #5b9bd5; 
+            font-size: 36px;
             text-align: center;
-            grid-column: 1 / -1;
+            margin-bottom: 25px; 
+            text-shadow: 3px 3px 0px #fff, 5px 5px 0px rgba(91,155,213,0.15);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%) rotate(-1.5deg);
         }
-        .hidden {
-            display: none !important;
+        h2::before {
+            content: '❄️';
+            margin-right: 8px;
         }
 
-        /* Booking Terms & Confirmation Modal Overlay */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-card {
-            background-color: #fff;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            transform: scale(0.9);
-            transition: transform 0.25s ease;
-        }
-        .modal-overlay.active .modal-card {
-            transform: scale(1);
-        }
-        .modal-header {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #edf2f7;
-            padding-bottom: 10px;
-        }
-        .booking-details-box {
-            background-color: #f7fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 16px;
-            font-size: 14px;
-        }
-        .booking-details-box div {
-            margin-bottom: 4px;
-        }
-        .tc-heading {
-            font-weight: 700;
-            font-size: 13px;
-            color: #e53e3e;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-        .tc-box {
-            background-color: #fffaf0;
-            border: 1px solid #feebc8;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 13px;
-            color: #744210;
-            line-height: 1.5;
-            max-height: 160px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-        .btn {
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 14px;
+        /* Search Bar layout - Soft, pill-shaped bubble look */
+        .search-container { margin-bottom: 30px; width: 100%; }
+        .search-input {
+            width: 100%; padding: 14px 22px; font-size: 16px;
+            font-family: 'Quicksand', sans-serif;
             font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: background 0.15s ease;
+            border: 3px dashed #adcce9; border-radius: 30px;
+            background-color: #fff; color: #4a5768;
+            box-shadow: 0 6px 0px rgba(173, 204, 233, 0.3);
+            box-sizing: border-box; transition: all 0.2s ease;
         }
-        .btn-cancel {
-            background-color: #edf2f7;
-            color: #4a5568;
+        .search-input:focus {
+            outline: none; 
+            border-color: #5b9bd5;
+            box-shadow: 0 6px 0px rgba(91, 155, 213, 0.4);
+            transform: translateY(-2px);
         }
-        .btn-cancel:hover {
-            background-color: #e2e8f0;
+
+        /* Navigational tab components - Washi Tape Style */
+        .controls-row { border-bottom: 3px dotted #adcce9; margin-bottom: 30px; padding-bottom: 5px; }
+        .tabs-container {
+            display: flex; overflow-x: auto; white-space: nowrap; gap: 12px;
+            scrollbar-width: none; -webkit-overflow-scrolling: touch;
+            padding: 5px;
         }
-        .btn-wa {
-            background-color: #25D366;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .tabs-container::-webkit-scrollbar { display: none; }
+        .tab-button {
+            padding: 10px 20px; font-size: 16px; font-weight: 700;
+            font-family: 'Fredoka', sans-serif;
+            background: #fff; color: #a0b2c6; border: 2px solid #e1ecf7; 
+            border-radius: 12px; cursor: pointer;
+            box-shadow: 2px 3px 0px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
         }
-        .btn-wa:hover {
-            background-color: #128C7E;
+        .tab-button:hover { color: #5b9bd5; background: #fafcff; transform: translateY(-1px); }
+        .tab-button.active { 
+            color: #fff; 
+            background-color: #7cb5ec;
+            border-color: #7cb5ec;
+            transform: rotate(-1deg) translateY(-2px);
+            box-shadow: 3px 4px 0px rgba(91, 155, 213, 0.3);
         }
+
+        /* Swipe container area */
+        #content-swipe-zone { min-height: 400px; touch-action: pan-y; }
+
+        /* Spreadsheet data tables styling - Soft Notebook Aesthetic */
+        .table-container {
+            overflow-x: auto; box-shadow: 0 8px 16px rgba(141,164,189,0.15);
+            border-radius: 16px; background: white; border: 3px solid #fff;
+        }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 14px 18px; border-bottom: 2px dashed #f0f5fa; white-space: nowrap; font-weight: 600; }
+        th { background-color: #7cb5ec; color: white; font-family: 'Fredoka', sans-serif; font-size: 14px; letter-spacing: 0.5px; }
+        tr:hover { background-color: #f7fbfd; }
+
+        /* Item Categories Accordions - Paper Stack Style */
+        .accordion-section {
+            background: #fff; border: 3px solid #fff; border-radius: 20px;
+            margin-bottom: 24px; overflow: hidden; 
+            box-shadow: 0 8px 20px rgba(160,185,210,0.15);
+            transition: transform 0.2s ease;
+        }
+        .accordion-header {
+            background-color: #e8f2fc; padding: 16px 24px; font-size: 18px;
+            font-family: 'Fredoka', sans-serif; color: #4d7ea8; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: background-color 0.2s ease;
+        }
+        .accordion-header:hover { background-color: #ddedfc; }
+        .accordion-icon { font-size: 14px; transition: transform 0.2s ease; color: #4d7ea8; }
+        .accordion-section.collapsed .accordion-icon { transform: rotate(-90deg); }
+        .accordion-content { padding: 25px; transition: max-height 0.3s ease-out; background: #fff; }
+        .accordion-section.collapsed .accordion-content { display: none !important; }
+
+        /* Display catalog card grid system */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; padding: 5px 0; }
+        
+        /* The Polaroid/Sticker Card Concept */
+        .grid-card {
+            border-radius: 24px 16px 24px 20px; 
+            border: 6px solid #fff; padding: 16px;
+            display: flex; flex-direction: column; position: relative; 
+            box-shadow: 0 10px 25px rgba(141,164,189,0.18); 
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+        }
+        /* Random subtle shifts for that organic handmade look */
+        .grid-card:nth-child(odd) { transform: rotate(-0.8deg); }
+        .grid-card:nth-child(even) { transform: rotate(0.8deg); }
+        
+        .grid-card:hover { 
+            transform: translateY(-8px) scale(1.02) rotate(1deg) !important; 
+            box-shadow: 0 15px 35px rgba(110,138,168,0.25); 
+            z-index: 5;
+        }
+        
+        /* Cute Paperclip overlay effect to mimic the scrapbook sample */
+        .grid-card::before {
+            content: '📎';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 24px;
+            z-index: 3;
+            transform: rotate(-15deg);
+            opacity: 0.85;
+        }
+        
+        /* Media and image wrapper layouts - Rounded polaroid window frame */
+        .grid-image-wrapper {
+            width: 100%; height: 250px; background-color: #fff;
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; margin-bottom: 16px; border: 2px solid #f0f6fc; position: relative;
+        }
+        .grid-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .grid-image-wrapper iframe { width: 100%; height: 100%; border: none; display: block; }
+        
+        /* Typography updates for card content */
+        .grid-title { 
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600; font-size: 17px; color: #435266; 
+            margin: 0 0 14px 0; line-height: 1.3; text-align: left; padding-right: 45px; 
+        }
+
+        /* Cost processing badges - Styled like a small price sticker tag */
+        .price-circle {
+            position: absolute; bottom: 78px; right: 12px; 
+            background-color: #ff8fa3;
+            color: white; border-radius: 12px; width: auto; height: auto;
+            padding: 5px 10px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 13px; font-weight: 700; 
+            box-shadow: 2px 3px 0px rgba(220, 100, 120, 0.3); z-index: 2;
+            transform: rotate(5deg);
+        }
+
+        /* Mini visual calendar modules */
+        .calendar-label { font-size: 12px; color: #8fa0b5; margin-top: 12px; font-weight: 700; text-align: left; letter-spacing: 0.3px;}
+        .calendar-row { display: flex; gap: 8px; margin-top: auto; padding-top: 6px; }
+        .calendar-square {
+            width: 44px; height: 44px; border-radius: 12px; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            font-weight: 700; transition: all 0.2s ease; line-height: 1.1;
+            box-shadow: 1px 2px 0px rgba(0,0,0,0.04);
+        }
+        .calendar-square span:first-child { font-size: 14px; font-family: 'Fredoka', sans-serif; }
+        .calendar-month { font-size: 9px; font-weight: 700; text-transform: uppercase; opacity: 0.8; margin-top: 1px; }
+        
+        /* Validation and system state colors - Sweet anime pastel tokens */
+        .past-date-warning { background-color: #fff0f2; border: 2px dashed #ffb3c1; color: #c93b55; padding: 12px; border-radius: 12px; font-size: 13px; margin-bottom: 16px; display: none; font-weight: 600; }
+        
+        .calendar-square.available { background-color: #e3f9f5; color: #2ca58d; border: 2px solid #c2f1e7; cursor: pointer; }
+        .calendar-square.available:hover { background-color: #2ca58d; color: white; border-color: #2ca58d; transform: translateY(-3px) rotate(-3deg); box-shadow: 0 4px 8px rgba(44, 165, 141, 0.3); }
+        
+        .calendar-square.occupied { background-color: #ffebee; color: #ff5252; border: 2px dashed #ffcdd2; cursor: not-allowed; position: relative; }
+        .status-message { font-style: italic; color: #a2b4c7; padding: 30px; text-align: center; font-weight: 600; grid-column: 1 / -1; width: 100%; box-sizing: border-box; }
+        .hidden { display: none !important; }
+
+        /* Booking Overlay modal UI structures - Pop-up journal entry design */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(74, 90, 110, 0.4); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-card { 
+            background-color: #fff; width: 90%; max-width: 500px; 
+            border-radius: 28px; padding: 28px; 
+            border: 4px solid #fff;
+            box-shadow: 0 15px 40px rgba(50,65,85,0.25); 
+            transform: scale(0.9) rotate(-1deg); transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        .modal-overlay.active .modal-card { transform: scale(1) rotate(0deg); }
+        
+        .modal-header { font-family: 'Fredoka', sans-serif; font-size: 22px; font-weight: 700; color: #4d7ea8; margin-bottom: 16px; border-bottom: 3px dashed #edf4fc; padding-bottom: 12px; }
+        .booking-details-box { background-color: #f5f9fe; border: 2px solid #e2effd; border-radius: 16px; padding: 14px; margin-bottom: 18px; font-size: 15px; color: #52667d; }
+        .booking-details-box div { margin-bottom: 6px; }
+        
+        .tc-heading { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 14px; color: #ff758f; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .tc-box { background-color: #fff5f7; border: 2px solid #ffe3e8; border-radius: 16px; padding: 14px; font-size: 13px; color: #8a4f5a; line-height: 1.6; max-height: 160px; overflow-y: auto; margin-bottom: 24px; }
+        
+        .modal-actions { display: flex; justify-content: flex-end; gap: 12px; }
+        .btn { padding: 12px 20px; border-radius: 16px; font-size: 14px; font-weight: 700; font-family: 'Fredoka', sans-serif; cursor: pointer; border: none; transition: all 0.2s ease; }
+        .btn-cancel { background-color: #f0f4f8; color: #738499; }
+        .btn-cancel:hover { background-color: #e2eaf2; transform: translateY(-1px); }
+        .btn-wa { background-color: #25D366; color: white; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 0px #1eaf53; }
+        .btn-wa:hover { background-color: #22c35e; transform: translateY(-2px); box-shadow: 0 6px 0px #1eaf53; }
+        .btn-wa:active { transform: translateY(0px); box-shadow: 0 2px 0px #1eaf53; }
     </style>
 </head>
 <body>
 
     <h2>Snowrentcos</h2>
+
+    <div class="search-container">
+        <input type="text" id="search-bar" class="search-input" placeholder="Search costume, resi, name, or details dynamically...">
+    </div>
     
     <div class="controls-row">
         <div id="tabs-container" class="tabs-container"></div>
     </div>
     
-    <div id="table-view-panel" class="table-container hidden">
-        <table id="data-table">
-            <thead>
-                <tr id="table-header"></tr>
-            </thead>
-            <tbody id="table-body">
-                <tr>
-                    <td class="status-message">Initializing...</td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="content-swipe-zone">
+        <div id="table-view-panel" class="table-container hidden">
+            <table id="data-table">
+                <thead><tr id="table-header"></tr></thead>
+                <tbody id="table-body"><tr><td class="status-message">Initializing...</td></tr></tbody>
+            </table>
+        </div>
+        <div id="grid-view-panel" class="hidden"></div>
     </div>
-
-    <div id="grid-view-panel" class="grid-container hidden"></div>
 
     <div id="booking-modal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">Rental Booking Request</div>
-            
-            <div class="booking-details-box">
+           <div class="booking-details-box">
                 <div><strong>Costume:</strong> <span id="modal-costume-name">-</span></div>
                 <div><strong>Selected Date:</strong> <span id="modal-target-date">-</span></div>
             </div>
-
+            <div id="modal-past-warning" class="past-date-warning">⚠️ Notice: This date has already passed!</div>
             <div class="tc-heading">Terms & Conditions (S&K)</div>
             <div class="tc-box">
-                DP minimal 50k or kalau yang di rental dibawah 50k sesuai harga yang direntalin ^^ tq
-                <br><br>
-                Pembayaran wajib lunas H-1 sebelum ambil kostum / kirim by TF
-                <br><br>
-                <strong>Rekening Pembayaran Kostum Cosplay</strong>
-                <br><br>
+                DP minimal 50k or kalau yang di rental dibawah 50k sesuai harga yang direntalin ^^ tq<br><br>
+                Pembayaran wajib lunas H-1 sebelum ambil kostum / kirim by TF<br><br>
+                <strong>Rekening Pembayaran Kostum Cosplay</strong><br><br>
                 Pembayaran melalui QRIS dikenakan biaya admin sebesar Rp 1.000/ transaksi. Wajib dibayarkan setiap kali transfer melalui QRIS. Selain QRIS tidak dikenakan biaya admin
             </div>
-
             <div class="modal-actions">
                 <button class="btn btn-cancel" onclick="closeBookingModal()">Cancel</button>
                 <button class="btn btn-wa" id="modal-wa-submit">Proceed to WhatsApp</button>
@@ -380,264 +278,306 @@
     </div>
 
     <script>
-        // 1. CONFIGURATION TARGETS
+        // 1. DATA AND APP TARGET CONFIGURATIONS
         const SPREADSHEET_ID = '1NYA0ZVcPQU-sVyEEAWSkAIOhVc0R6tFfqLXVHe8qmsw'; 
         const AVAILABLE_SHEETS = ['List', 'Resi JNT', 'Resi Paxel', 'COD']; 
-        
-        // WhatsApp target destination setting configuration (Change to your business number)
         const WHATSAPP_NUMBER = '62895363837524'; 
 
-        // Internal State Engine
-        let currentSheetData = [];
-        let activeSheet = AVAILABLE_SHEETS[0];
+        const TABLE_VISIBLE_COLUMNS = {
+            'Resi JNT': ['Nama', 'Resi', 'Kostum','Kelengkapan','Kekurangan'],
+            'Resi Paxel': ['Nama', 'Resi', 'Kostum','Kelengkapan','Kekurangan'],
+            'COD': ['Nama', 'Kostum','Kelengkapan','Kekurangan']
+        };
 
-        function generateFaintCategoryColor(categoryName) {
-            if (!categoryName) return 'hsl(0, 0%, 100%)';
-            let hash = 0;
-            const cleanStr = String(categoryName).trim().toUpperCase();
-            for (let i = 0; i < cleanStr.length; i++) {
-                hash = cleanStr.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            const hue = Math.abs(hash) % 360;
-            return `hsl(${hue}, 55%, 95%)`;
+        // UI State tracker storage
+        let currentSheetData = [], activeSheet = AVAILABLE_SHEETS[0], searchFilterString = "";
+        let touchStartX = 0, touchEndX = 0;
+        const SWIPE_MIN_DISTANCE = 60;
+
+        // Computes dynamic categorical tint colors
+        function generateFaintCategoryColor(name) {
+            if (!name) return 'hsl(0, 0%, 100%)';
+            let hash = 0, cleanStr = String(name).trim().toUpperCase();
+            for (let i = 0; i < cleanStr.length; i++) hash = cleanStr.charCodeAt(i) + ((hash << 5) - hash);
+            return `hsl(${Math.abs(hash) % 360}, 55%, 95%)`;
         }
 
+        // Extracts embed code extensions from Instagram links
         function extractInstagramShortcode(url) {
             if (!url) return null;
             const match = String(url).match(/\/(p|reel|tv)\/([A-Za-z0-9_-]+)/);
             return match ? match[2] : null;
         }
 
-        // Open Modal Handler
+        // Opens booking popup window and checks timeline relative to 2026
         function openBookingModal(costumeName, dateString) {
             document.getElementById('modal-costume-name').textContent = costumeName;
             document.getElementById('modal-target-date').textContent = dateString;
             
-            // Build text template exactly matching the user formatting preferences
-            const templateText = `☃️ F͓̽o͓̽r͓̽m͓̽ R͓̽e͓̽n͓̽t͓̽a͓̽l͓̽ S͓̽n͓̽o͓̽w͓̽ R͓̽e͓̽n͓̽t͓̽ C͓̽o͓̽s͓̽ ☃️\n\n` +
-                                 `1. Kostum yang dipakai : ${costumeName}\n` +
-                                 `2. Dipakai tanggal : ${dateString}\n` +
-                                 `3. foto KTP/KIA/SIM/KT PELAJAR/IDENTITAS LAINNYA (NIK silahkan diblur saja) :\n` +
-                                 `4. Foto selfie dengan KTP/KIA/SIM/KT PELAJAR/IDENTITAS LAINNYA + FS TULISAN SNOWRENTCOS :\n` +
-                                 `5. Nama Lengkap ;\n` +
-                                 `6. Alamat Pengiriman (Kosong saja kalau diambil dirumah Snowrent) :\n` +
-                                 `Kecamatan & Kode Pos :\n` +
-                                 `7. No HP (WA) :\n` +
-                                 `8. Sosmed aktif (SS INSTAGRAM/ TIKTOK) :\n` +
-                                 `9. No HP (WA) kerabat :`;
-
-            const encodedMessage = encodeURIComponent(templateText);
-            const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            const warningEl = document.getElementById('modal-past-warning');
+            warningEl.style.display = 'none';
             
-            const submitBtn = document.getElementById('modal-wa-submit');
-            submitBtn.onclick = function() {
-                window.open(waUrl, '_blank');
+            if (dateString && !dateString.includes('Custom Date')) {
+                const matchDigits = dateString.match(/\d+/);
+                if (matchDigits) {
+                    const day = parseInt(matchDigits[0], 10);
+                    const upper = dateString.toUpperCase();
+                    const mList = ['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGU','SEP','OKT','NOV','DES','MAY','AUG','OCT','DEC'];
+                    const mMap = [0,1,2,3,4,5,6,7,8,9,10,11,4,7,9,11];
+                    let month = 0;
+                    
+                    mList.forEach((m, idx) => { if(upper.includes(m)) month = mMap[idx]; });
+                    
+                    if (new Date(2026, month, day, 23, 59, 59) < new Date()) warningEl.style.display = 'block';
+                }
+            }
+            
+            const templateText = `☃️ F͓̽o͓̽r͓̽m͓̽ R͓̽e͓̽n͓̽t͓̽a͓̽l͓̽ S͓̽n͓̽o͓̽w͓̽ R͓̽e͓̽n͓̽t͓̽ C͓̽o͓̽s͓̽ ☃️\n\n1. Kostum yang dipakai : ${costumeName}\n2. Dipakai tanggal : ${dateString}\n3. foto KTP/KIA/SIM/KT PELAJAR/IDENTITAS LAINNYA (NIK silahkan diblur saja) :\n4. Foto selfie dengan KTP/KIA/SIM/KT PELAJAR/IDENTITAS LAINNYA + FS TULISAN SNOWRENTCOS :\n5. Nama Lengkap ;\n6. Alamat Pengiriman (Kosong saja kalau diambil dirumah Snowrent) :\nKecamatan & Kode Pos :\n7. No HP (WA) :\n8. Sosmed aktif (SS INSTAGRAM/ TIKTOK) :\n9. No HP (WA) kerabat :`;
+            
+            document.getElementById('modal-wa-submit').onclick = () => {
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(templateText)}`, '_blank');
                 closeBookingModal();
             };
-
             document.getElementById('booking-modal').classList.add('active');
         }
 
-        // Close Modal Handler
-        function closeBookingModal() {
-            document.getElementById('booking-modal').classList.remove('active');
+        // Hides booking verification popup window
+        function closeBookingModal() { document.getElementById('booking-modal').classList.remove('active'); }
+
+        // Expands or collapses item category headers
+        function toggleAccordion(headerElement) { headerElement.parentElement.classList.toggle('collapsed'); }
+
+        // Handles switching active spreadsheet views smoothly
+        function handleTabSwitch(sheetName) {
+            activeSheet = sheetName;
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                if (btn.textContent === sheetName) {
+                    btn.classList.add('active');
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                } else btn.classList.remove('active');
+            });
+            fetchSheetData(sheetName);
         }
 
-        // Initialize Tabs Layout
+        // Populates tabular navigation layout elements
         function initializeTabs() {
             const container = document.getElementById('tabs-container');
             container.innerHTML = '';
-            
             AVAILABLE_SHEETS.forEach((sheetName, index) => {
                 const button = document.createElement('button');
-                button.className = 'tab-button';
-                if (index === 0) button.classList.add('active');
+                button.className = `tab-button ${index === 0 ? 'active' : ''}`;
                 button.textContent = sheetName;
-                
-                button.onclick = function() {
-                    const buttons = document.querySelectorAll('.tab-button');
-                    buttons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    activeSheet = sheetName;
-                    fetchSheetData(sheetName);
-                };
+                button.onclick = () => handleTabSwitch(sheetName);
                 container.appendChild(button);
             });
         }
 
+        // Filters local dataset rows matching active query filters
+        function getFilteredDataset(data) {
+            if (!searchFilterString) return data;
+            return data.filter(row => Object.values(row).some(val => String(val).toLowerCase().includes(searchFilterString)));
+        }
+
+        // Directs filtered dataset downstream into specific layouts
+        function executeRenderPipeline() {
+            const filtered = getFilteredDataset(currentSheetData);
+            activeSheet === 'List' ? renderGridView(filtered) : renderTableView(filtered);
+        }
+
+        // Asynchronously pulls catalog records from remote endpoint matrix
         async function fetchSheetData(sheetName) {
-            const tablePanel = document.getElementById('table-view-panel');
-            const gridPanel = document.getElementById('grid-view-panel');
+            const tablePanel = document.getElementById('table-view-panel'), gridPanel = document.getElementById('grid-view-panel');
             const tableBody = document.getElementById('table-body');
             
             tableBody.innerHTML = '<tr><td class="status-message">Loading data...</td></tr>';
             gridPanel.innerHTML = '<div class="status-message">Loading data...</div>';
 
-            if (sheetName === 'List') {
-                tablePanel.classList.add('hidden');
-                gridPanel.classList.remove('hidden');
-            } else {
-                gridPanel.classList.add('hidden');
-                tablePanel.classList.remove('hidden');
-            }
+            sheetName === 'List' ? (tablePanel.classList.add('hidden'), gridPanel.classList.remove('hidden')) : (gridPanel.classList.add('hidden'), tablePanel.classList.remove('hidden'));
             
-            const url = `https://opensheet.elk.sh/${SPREADSHEET_ID}/${sheetName}`;
             try {
-                const response = await fetch(url);
+                const response = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/${sheetName}`);
                 if (!response.ok) throw new Error(`HTTP Status: ${response.status}`);
-                
                 currentSheetData = await response.json();
 
                 if (!currentSheetData || currentSheetData.length === 0) {
-                    const emptyMsg = '<tr><td class="status-message">This tab is completely empty.</td></tr>';
-                    tableBody.innerHTML = emptyMsg;
+                    tableBody.innerHTML = '<tr><td class="status-message">This tab is completely empty.</td></tr>';
                     gridPanel.innerHTML = '<div class="status-message">This tab is completely empty.</div>';
                     return;
                 }
-
-                if (sheetName === 'List') {
-                    renderGridView(currentSheetData);
-                } else {
-                    renderTableView(currentSheetData);
-                }
-
+                executeRenderPipeline();
             } catch (error) {
-                console.error("[Debug Error] Extraction failure: ", error);
-                const errorMsg = `Failed to load data tab "${sheetName}". Verify name and parameters.`;
-                tableBody.innerHTML = `<tr><td class="status-message" style="color: red;">${errorMsg}</td></tr>`;
-                gridPanel.innerHTML = `<div class="status-message" style="color: red;">${errorMsg}</div>`;
+                console.error(error);
+                const msg = `Failed to load data tab "${sheetName}". Verify name and parameters.`;
+                tableBody.innerHTML = `<tr><td class="status-message" style="color: red;">${msg}</td></tr>`;
+                gridPanel.innerHTML = `<div class="status-message" style="color: red;">${msg}</div>`;
             }
         }
 
-        function renderTableView(rawData) {
-            const headerRow = document.getElementById('table-header');
-            const tableBody = document.getElementById('table-body');
-            
-            headerRow.innerHTML = '';
-            tableBody.innerHTML = '';
+        // Compiles standard table formatting layouts
+        function renderTableView(filteredData) {
+            const headerRow = document.getElementById('table-header'), tableBody = document.getElementById('table-body');
+            headerRow.innerHTML = ''; tableBody.innerHTML = '';
 
-            const allKeys = Array.from(new Set(rawData.flatMap(row => Object.keys(row))))
-                                 .filter(key => key.trim() !== '' && key !== 'undefined');
+            if (filteredData.length === 0) {
+                tableBody.innerHTML = '<tr><td class="status-message">No matching results found.</td></tr>';
+                return;
+            }
 
-            allKeys.forEach(header => {
-                const th = document.createElement('th');
-                th.textContent = header;
-                headerRow.appendChild(th);
+            let operationalKeys = TABLE_VISIBLE_COLUMNS[activeSheet] || Array.from(new Set(filteredData.flatMap(Object.keys))).filter(k => k.trim() !== '' && k !== 'undefined');
+            operationalKeys.forEach(header => {
+                const th = document.createElement('th'); th.textContent = header; headerRow.appendChild(th);
             });
 
-            rawData.forEach(row => {
-                const hasData = Object.values(row).some(val => val && String(val).trim() !== '');
-                if (!hasData) return;
-
+            filteredData.forEach(row => {
+                if (!Object.values(row).some(val => val && String(val).trim() !== '')) return;
                 const tr = document.createElement('tr');
-                allKeys.forEach(header => {
+                operationalKeys.forEach(header => {
                     const td = document.createElement('td');
-                    let cellValue = row[header] !== undefined ? row[header] : '';
-                    if (typeof cellValue === 'object') cellValue = '';
-                    td.textContent = cellValue;
+                    td.textContent = row[header] !== undefined && typeof row[header] !== 'object' ? row[header] : '';
                     tr.appendChild(td);
                 });
                 tableBody.appendChild(tr);
             });
         }
 
-        function renderGridView(rawData) {
+        // Compiles dynamic asset grid components with visual calendars
+        function renderGridView(filteredData) {
             const gridPanel = document.getElementById('grid-view-panel');
             gridPanel.innerHTML = '';
+            if (filteredData.length === 0) {
+                gridPanel.innerHTML = '<div class="status-message">No matching costumes found.</div>';
+                return;
+            }
 
-            const allKeys = Array.from(new Set(rawData.flatMap(row => Object.keys(row))));
-
-            const titleKey = allKeys.find(k => k.toUpperCase().includes('DAFTAR')) || allKeys[0];
-            const imageKey = allKeys.find(k => k.toUpperCase().includes('LINK') || k.toUpperCase().includes('IG'));
-            const priceKey = allKeys.find(k => k.toUpperCase().includes('HARGA'));
-            const categoryKey = allKeys.find(k => k.toUpperCase().includes('CATEGORY') || k.toUpperCase().includes('ANIME'));
-
-            const dateKeys = allKeys.filter(k => {
-                const upper = k.toUpperCase();
-                return upper.includes('MEI') || upper.includes('JUNI') || (/\d+/.test(k) && !upper.includes('NO') && k !== titleKey && k !== priceKey);
+            const prototypeKeys = Array.from(new Set(currentSheetData.flatMap(Object.keys)));
+            const findKey = terms => prototypeKeys.find(k => terms.some(t => k.toUpperCase().includes(t)));
+            
+            const titleKey = findKey(['DAFTAR']) || prototypeKeys[0];
+            const imageKey = findKey(['LINK', 'IG']), priceKey = findKey(['HARGA']), categoryKey = findKey(['CATEGORY', 'ANIME']);
+            const dateKeys = prototypeKeys.filter(k => {
+                const u = k.toUpperCase();
+                return u.includes('MEI') || u.includes('JUNI') || (/\d+/.test(k) && !u.includes('NO') && k !== titleKey && k !== priceKey);
             }).slice(0, 5);
 
-            rawData.forEach((row, index) => {
+            const categorizedMap = {};
+            filteredData.forEach(row => {
                 const titleValue = row[titleKey] ? String(row[titleKey]).trim() : '';
-                if (!titleValue || titleValue === '') return;
+                if (!titleValue) return;
+                let cat = categoryKey && row[categoryKey] ? String(row[categoryKey]).trim() : 'Uncategorized';
+                if (!categorizedMap[cat]) categorizedMap[cat] = [];
+                categorizedMap[cat].push({ row, titleValue });
+            });
 
-                const card = document.createElement('div');
-                card.className = 'grid-card';
+            Object.keys(categorizedMap).sort((a, b) => categorizedMap[b].length - categorizedMap[a].length).forEach(cat => {
+                const section = document.createElement('div');
+                section.className = `accordion-section ${!searchFilterString ? 'collapsed' : ''}`;
                 
-                const categoryValue = categoryKey ? row[categoryKey] : '';
-                card.style.backgroundColor = generateFaintCategoryColor(categoryValue);
+                const header = document.createElement('div');
+                header.className = 'accordion-header';
+                header.onclick = function() { toggleAccordion(this); };
+                header.innerHTML = `<span>${cat} (${categorizedMap[cat].length})</span><span class="accordion-icon">▼</span>`;
+                section.appendChild(header);
 
-                const imgWrapper = document.createElement('div');
-                imgWrapper.className = 'grid-image-wrapper';
-                
-                const rawUrl = imageKey ? String(row[imageKey]).trim() : '';
-                const igShortcode = extractInstagramShortcode(rawUrl);
+                const contentWrapper = document.createElement('div');
+                contentWrapper.className = 'accordion-content grid-container';
 
-                if (igShortcode) {
-                    const iframe = document.createElement('iframe');
-                    iframe.src = `https://www.instagram.com/p/${igShortcode}/embed`;
-                    iframe.setAttribute('scrolling', 'no');
-                    iframe.setAttribute('allowtransparency', 'true');
-                    imgWrapper.appendChild(iframe);
-                } else if (rawUrl && rawUrl.startsWith('http')) {
-                    const img = document.createElement('img');
-                    img.src = rawUrl;
-                    img.alt = titleValue;
-                    imgWrapper.appendChild(img);
-                } else {
-                    const img = document.createElement('img');
-                    img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%23cbd5e0" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
-                    imgWrapper.appendChild(img);
-                }
-                card.appendChild(imgWrapper);
+                categorizedMap[cat].forEach(({ row, titleValue }) => {
+                    const card = document.createElement('div');
+                    card.className = 'grid-card';
+                    card.style.backgroundColor = generateFaintCategoryColor(cat === 'Uncategorized' ? '' : cat);
 
-                const titleDiv = document.createElement('div');
-                titleDiv.className = 'grid-title';
-                titleDiv.textContent = titleValue;
-                card.appendChild(titleDiv);
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.className = 'grid-image-wrapper';
+                    const rawUrl = imageKey ? String(row[imageKey]).trim() : '', igShortcode = extractInstagramShortcode(rawUrl);
 
-                const priceValue = priceKey ? row[priceKey] : '';
-                if (priceValue !== undefined && String(priceValue).trim() !== '') {
-                    const priceCircle = document.createElement('div');
-                    priceCircle.className = 'price-circle';
-                    priceCircle.textContent = String(priceValue).trim();
-                    card.appendChild(priceCircle);
-                }
-
-                // Mini Calendar Row Construction
-                const calendarRow = document.createElement('div');
-                calendarRow.className = 'calendar-row';
-
-                dateKeys.forEach(dateHeader => {
-                    const square = document.createElement('div');
-                    square.className = 'calendar-square';
-                    
-                    const matchDigits = dateHeader.match(/\d+/);
-                    square.textContent = matchDigits ? matchDigits[0] : dateHeader.substring(0, 2);
-
-                    const bookingValue = row[dateHeader];
-                    const isOccupied = bookingValue && String(bookingValue).trim() !== '';
-
-                    if (isOccupied) {
-                        square.classList.add('occupied');
-                        square.title = `${dateHeader}\nStatus: Booked (${String(bookingValue).trim()})`;
+                    if (igShortcode) {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = `https://www.instagram.com/p/${igShortcode}/embed`;
+                        iframe.setAttribute('scrolling', 'no'); iframe.setAttribute('allowtransparency', 'true');
+                        imgWrapper.appendChild(iframe);
+                    } else if (rawUrl.startsWith('http')) {
+                        const img = document.createElement('img'); img.src = rawUrl; img.alt = titleValue;
+                        imgWrapper.appendChild(img);
                     } else {
-                        square.classList.add('available');
-                        square.title = `${dateHeader}\nStatus: Available (Click to rent)`;
-                        // Interactive action on open items
-                        square.onclick = function() {
-                            openBookingModal(titleValue, dateHeader);
-                        };
+                        const img = document.createElement('img');
+                        img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%23cbd5e0" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
+                        imgWrapper.appendChild(img);
                     }
-                    calendarRow.appendChild(square);
+                    card.appendChild(imgWrapper);
+
+                    const titleDiv = document.createElement('div'); titleDiv.className = 'grid-title'; titleDiv.textContent = titleValue; card.appendChild(titleDiv);
+
+                    const priceValue = priceKey ? row[priceKey] : '';
+                    if (priceValue !== undefined && String(priceValue).trim() !== '') {
+                        const pc = document.createElement('div'); pc.className = 'price-circle'; pc.textContent = String(priceValue).trim(); card.appendChild(pc);
+                    }
+
+                    const cl = document.createElement('div'); cl.className = 'calendar-label'; cl.textContent = 'Rent this on...'; card.appendChild(cl);
+                    const calendarRow = document.createElement('div'); calendarRow.className = 'calendar-row';
+
+                    dateKeys.forEach(dateHeader => {
+                        const square = document.createElement('div'); square.className = 'calendar-square';
+                        const matchDigits = dateHeader.match(/\d+/), dayNum = matchDigits ? matchDigits[0] : dateHeader.substring(0, 2);
+                        let shortMonth = 'Day', uH = dateHeader.toUpperCase();
+                        
+                        if (uH.includes('MEI') || uH.includes('MAY')) shortMonth = 'Mei';
+                        else if (uH.includes('JUN')) shortMonth = 'Jun';
+                        else if (uH.includes('JUL')) shortMonth = 'Jul';
+                        else if (uH.includes('AGU') || uH.includes('AUG')) shortMonth = 'Agu';
+                        
+                        square.innerHTML = `<span>${dayNum}</span><span class="calendar-month">${shortMonth}</span>`;
+                        const bookingValue = row[dateHeader], isOccupied = bookingValue && String(bookingValue).trim() !== '';
+
+                        if (isOccupied) {
+                            square.classList.add('occupied'); square.title = `${dateHeader}\nStatus: Booked (${String(bookingValue).trim()})`;
+                        } else {
+                            square.classList.add('available'); square.title = `${dateHeader}\nStatus: Available (Click to rent)`;
+                            square.onclick = (e) => { e.stopPropagation(); openBookingModal(titleValue, dateHeader); };
+                        }
+                        calendarRow.appendChild(square);
+                    });
+                    
+                    const customSquare = document.createElement('div');
+                    customSquare.className = 'calendar-square available'; customSquare.innerHTML = '<span>+</span><span class="calendar-month">Cust</span>';
+                    customSquare.title = 'Click to request a custom rental date';
+                    customSquare.onclick = (e) => { e.stopPropagation(); openBookingModal(titleValue, 'Custom Date (Specify details in chat)'); };
+                    
+                    calendarRow.appendChild(customSquare);
+                    card.appendChild(calendarRow);
+                    contentWrapper.appendChild(card);
                 });
-                
-                card.appendChild(calendarRow);
-                gridPanel.appendChild(card);
+                section.appendChild(contentWrapper); gridPanel.appendChild(section);
             });
         }
 
+        // Binds live filtering processing cycles on input change
+        document.getElementById('search-bar').addEventListener('input', e => {
+            searchFilterString = e.target.value.toLowerCase().trim();
+            executeRenderPipeline();
+        });
+
+        // Binds dynamic swipe interactions for touch interfaces
+        const swipeZone = document.getElementById('content-swipe-zone');
+        swipeZone.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+        swipeZone.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].clientX; handleSwipeGesture(); }, { passive: true });
+
+        // Checks vector conditions to cycle operational viewing panels
+        function handleSwipeGesture() {
+            const deltaX = touchEndX - touchStartX, currentActiveIdx = AVAILABLE_SHEETS.indexOf(activeSheet);
+            if (currentActiveIdx === -1) return;
+
+            if (activeSheet !== 'List') {
+                const tc = document.getElementById('table-view-panel');
+                if (tc) {
+                    if (deltaX > SWIPE_MIN_DISTANCE && tc.scrollLeft > 5) return;
+                    if (deltaX < -SWIPE_MIN_DISTANCE && (tc.scrollLeft + tc.clientWidth) < (tc.scrollWidth - 5)) return;
+                }
+            }
+            if (deltaX < -SWIPE_MIN_DISTANCE && currentActiveIdx < AVAILABLE_SHEETS.length - 1) handleTabSwitch(AVAILABLE_SHEETS[currentActiveIdx + 1]);
+            else if (deltaX > SWIPE_MIN_DISTANCE && currentActiveIdx > 0) handleTabSwitch(AVAILABLE_SHEETS[currentActiveIdx - 1]);
+        }
+
+        // Initial launch engine calls
         initializeTabs();
         fetchSheetData(activeSheet);
     </script>
